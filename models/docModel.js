@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 
-const workspaceSchema = mongoose.Schema(
+const docSchema = mongoose.Schema(
     {
         name: {
             type: String
         },
-        color: {
+        parentNode: {
             type: String,
-            default: "#000000"
         },
-        childNodes: {
+        childNodes:{
             type: Array,
             default: []
         },
@@ -23,4 +22,4 @@ const workspaceSchema = mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("Workspace", workspaceSchema);
+module.exports = mongoose.model("Document", docSchema);

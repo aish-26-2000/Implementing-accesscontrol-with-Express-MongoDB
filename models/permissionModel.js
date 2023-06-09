@@ -19,7 +19,7 @@ const permissionSchema = mongoose.Schema(
                 },
                 operation: [
                     {
-                        type: String,
+                        type: String, 
                     }
                 ]
         },

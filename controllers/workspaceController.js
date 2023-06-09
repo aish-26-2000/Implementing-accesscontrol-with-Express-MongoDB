@@ -9,7 +9,7 @@ const createWorkspace = asyncHandler(async (req, res) => {
     const permissionParams = {
         userId: userId,
         resourceId: workspace.id,
-        role: 'owner',
+        role: 'admin',
         permissions: {
             resource: 'workspace',
             operation: ['view', 'edit', 'delete']
@@ -17,6 +17,17 @@ const createWorkspace = asyncHandler(async (req, res) => {
     }
     await Permission.create(permissionParams);
     res.send(workspace)
+});
+
+const getWorkspaces = asyncHandler(async (req, res) => {
+    const permissions = await Permission.find({ userId: req.user.id, 'permissions.resource': 'workspace' });
+    const resourceIds = permissions.map(permission => permission.resourceId);
+    console.log(resourceIds);
+    const workspaces = await Workspace.find({ _id: { $in: resourceIds }});
+    res.send({
+        message: 'Success',
+        data: workspaces
+    })
 });
 
 const getWorkspace = asyncHandler(async (req, res) => {
@@ -93,4 +104,4 @@ const shareWorkpaceViewerAccess = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { createWorkspace, getWorkspace, editWorkspace, shareWorkpaceEditorAccess, shareWorkpaceViewerAccess };
+module.exports = { createWorkspace, getWorkspaces, getWorkspace, editWorkspace, shareWorkpaceEditorAccess, shareWorkpaceViewerAccess };
